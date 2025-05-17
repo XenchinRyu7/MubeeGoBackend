@@ -1,8 +1,25 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const SignInLayer = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+    
+    const success = login(email, password, rememberMe);
+    if (!success) {
+      setError('Invalid email or password');
+    }
+  };
+
   return (
     <section className='auth bg-base d-flex flex-wrap'>
       <div className='auth-left d-lg-block d-none'>
@@ -21,7 +38,12 @@ const SignInLayer = () => {
               Welcome back! please enter your detail
             </p>
           </div>
-          <form action='#'>
+          <form onSubmit={handleSubmit}>
+            {error && (
+              <div className="alert alert-danger mb-3" role="alert">
+                {error}
+              </div>
+            )}
             <div className='icon-field mb-16'>
               <span className='icon top-50 translate-middle-y'>
                 <Icon icon='mage:email' />
@@ -30,6 +52,9 @@ const SignInLayer = () => {
                 type='email'
                 className='form-control h-56-px bg-neutral-50 radius-12'
                 placeholder='Email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
             <div className='position-relative mb-20'>
@@ -42,6 +67,9 @@ const SignInLayer = () => {
                   className='form-control h-56-px bg-neutral-50 radius-12'
                   id='your-password'
                   placeholder='Password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
               <span
@@ -55,11 +83,12 @@ const SignInLayer = () => {
                   <input
                     className='form-check-input border border-neutral-300'
                     type='checkbox'
-                    defaultValue=''
                     id='remeber'
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                   />
                   <label className='form-check-label' htmlFor='remeber'>
-                    Remember me{" "}
+                    Remember me
                   </label>
                 </div>
                 <Link to='#' className='text-primary-600 fw-medium'>
@@ -71,7 +100,6 @@ const SignInLayer = () => {
               type='submit'
               className='btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32'
             >
-              {" "}
               Sign In
             </button>
             <div className='mt-32 center-border-horizontal text-center'>
@@ -101,7 +129,7 @@ const SignInLayer = () => {
             </div>
             <div className='mt-32 text-center text-sm'>
               <p className='mb-0'>
-                Don’t have an account?{" "}
+                Don't have an account?{" "}
                 <Link to='/sign-up' className='text-primary-600 fw-semibold'>
                   Sign Up
                 </Link>

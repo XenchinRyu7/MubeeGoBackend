@@ -2,11 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import ThemeToggleButton from "../helper/ThemeToggleButton";
+import { useAuth } from "../context/AuthContext";
 
 const MasterLayout = ({ children }) => {
+  const { logout } = useAuth();
   let [sidebarActive, seSidebarActive] = useState(false);
   let [mobileMenu, setMobileMenu] = useState(false);
   const location = useLocation(); // Hook to get the current route
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+  };
 
   useEffect(() => {
     const handleDropdownClick = (event) => {
@@ -1934,13 +1941,14 @@ const MasterLayout = ({ children }) => {
                         </Link>
                       </li>
                       <li>
-                        <Link
-                          className='dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3'
-                          to='#'
-                        >
-                          <Icon icon='lucide:power' className='icon text-xl' />{" "}
-                          Log Out
-                        </Link>
+                          <a
+                            href="#"
+                            onClick={handleLogout}
+                            className='dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3'
+                          >
+                            <Icon icon='lucide:power' className='icon text-xl' />{" "}
+                            Log Out
+                          </a>
                       </li>
                     </ul>
                   </div>
