@@ -22,8 +22,10 @@ import TagsPage from "../pages/TagsPage";
 import TooltipPage from "../pages/TooltipPage";
 import TypographyPage from "../pages/TypographyPage";
 import EmailPage from "../pages/EmailPage";
+import UsersTablePage from "../pages/UsersTablePage";
 
 const componentRoutes = [
+  { path: "/users-table", element: <UsersTablePage /> },
   { path: "/email", element: <EmailPage /> },
   { path: "/alert", element: <AlertPage /> },
   { path: "/avatar", element: <AvatarPage /> },
